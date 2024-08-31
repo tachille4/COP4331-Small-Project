@@ -1,10 +1,10 @@
 <?php
     $inData = getRequestInfo();
 
-    $firstName = "";
-    $lastName = "";
-    $login = "";
-    $password = "";
+    $firstName = $inData["FirstName"];
+    $lastName = $inData["LastName"];
+    $login = $inData["Login"];
+    $password = $inData["Password"];
 
     $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
     if($conn->connect_error)
@@ -14,7 +14,7 @@
     else
     {
         // No duplicate users
-        $stmt = $conn->prepare("SELECT Login from Users where Login like ?");
+        $stmt = $conn->prepare("SELECT * from Users where Login = ?");
         $stmt->bind_param("s", $login);
         $stmt->execute();
 
@@ -22,7 +22,7 @@
 
         // No dupelicate login found
         // Insert the user and an ID, then return the ID as a JSON object
-        if(mysqli_num_rows($result) == 0)
+        if($result->num_rows == 0)
         {
             $stmt = $conn->prepare("INSERT into Users (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
             $stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
@@ -34,7 +34,7 @@
             $conn->close();
     
             http_response_code(200);
-            returnWithInfo(json_encode(array("id"=> $id)));
+            returnWithInfo($id);
         }
         // Else login already exists, return an error
         else
@@ -55,9 +55,9 @@
         echo $obj;
     }
 
-    function returnWithInfo( $searchResults )
+    function returnWithInfo( $id )
 	{
-		$retValue = '{"results":[' . $searchResults . '],"error":""}';
+		$retValue = json_encode(array("id" => $id, "error" => ""));
 		sendResultInfoAsJson( $retValue );
 	}
 
