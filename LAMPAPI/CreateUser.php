@@ -39,7 +39,7 @@
         // Else login already exists, return an error
         else
         {
-            http_response_code(400);
+            http_response_code(409);
             returnWithError( "Username already exists" );
         }
     }
