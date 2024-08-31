@@ -20,15 +20,9 @@
 
         $result = $stmt->get_result();
 
-        // Check if rows were return (login already exists)
-        // If user exists return an error
-        if($result->num_rows > 0)
-        {
-            http_response_code(400);
-            returnWithError( "Username already exists" );
-        }
-        // Else insert the user and an ID, then return the ID as a JSON object
-        else
+        // No dupelicate login found
+        // Insert the user and an ID, then return the ID as a JSON object
+        if(mysqli_num_rows($result) == 0)
         {
             $stmt = $conn->prepare("INSERT into Users (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
             $stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
@@ -38,9 +32,15 @@
     
             $stmt->close();
             $conn->close();
-
+    
             http_response_code(200);
             returnWithInfo(json_encode(array("id"=> $id)));
+        }
+        // Else login already exists, return an error
+        else
+        {
+            http_response_code(400);
+            returnWithError( "Username already exists" );
         }
     }
 
@@ -51,7 +51,7 @@
 
     function sendResultInfoAsJson( $obj ) 
     {
-        header('Content-type: application/json');
+        header('Content-Type: application/json');
         echo $obj;
     }
 
