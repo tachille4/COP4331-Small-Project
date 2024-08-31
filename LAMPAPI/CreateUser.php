@@ -20,7 +20,7 @@
 
         $result = $stmt->get_result();
 
-        // No dupelicate login found
+        // No duplicate login found
         // Insert the user and an ID, then return the ID as a JSON object
         if($result->num_rows == 0)
         {
@@ -44,26 +44,30 @@
         }
     }
 
+    // Parse incoming JSON request
     function getRequestInfo()
 	{
 		return json_decode(file_get_contents('php://input'), true);
 	}
 
+    // Set the content header and return the JSON object
     function sendResultInfoAsJson( $obj ) 
     {
         header('Content-Type: application/json');
         echo $obj;
     }
 
+    // Return the user ID and empty error as a JSON object
     function returnWithInfo( $id )
 	{
 		$retValue = json_encode(array("id" => $id, "error" => ""));
 		sendResultInfoAsJson( $retValue );
 	}
 
+    // Return an error message
     function returnWithError( $err ) 
     {
-        $retValue = '{"error":"' . $err . '"}';
+        $retValue = json_encode(array("error" => $err));
         sendResultInfoAsJson( $retValue );
     }
 ?>
