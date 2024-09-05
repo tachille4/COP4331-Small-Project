@@ -1,8 +1,15 @@
 <?php
     $inData = getRequestInfo();
 
+    // Check if UserID and Name are set and not null
+    if (!isset($inData["UserID"]) || !isset($inData["Name"])) {
+        http_response_code(500);
+        returnWithError("Missing required fields: UserID or Name");
+        exit();
+    }
+
     $userId = $inData["UserID"];
-    $name = $inData["Name"];
+    $name = $inData["Name"]; 
 
     $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
     if($conn->connect_error)
