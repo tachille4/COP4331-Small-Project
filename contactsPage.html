@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+
+        <!-- Mobile support -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Page title in tab -->
+        <title>Login - Contact Manager</title>
+
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Import font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Moderustic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+        <!-- Custom CSS styles -->
+        <style>
+            body, html { /* Apply font to entire page */
+                height: 100%;
+                font-family: "Moderustic", sans-serif;
+            }
+            body { /* Page background color */
+                background-color: #151515;
+            }
+            
+            .action-list{
+                position: absolute;
+                left: 0px;
+            }
+            header {
+                background-color: #F1F1F1;
+                text-align: center;
+                padding: 30px;
+            }
+            .odiv {
+                display: block;
+                margin: auto;
+                width: 70%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Your Contacts</h1>
+        </header>
+        <div class="row">
+            <div class="col-sm-4">
+                <div>
+                <input type="text" id="nameTextAdd" placeholder="Name">
+                <input type="text" id="phoneTextAdd" placeholder="Phone Number">
+                <input type="text" id="emailTextAdd" placeholder="Email">
+                <input type="text" id="useridTextAdd" placeholder="User ID">
+                <button type="button" id="addContactButton" class="buttons"> Add Contact </button>
+                <br>
+                <span id="contactAddResult"></span>
+                </div>
+                <div>
+                    <input type="text" id="nameTextEdit" placeholder="Name">
+                    <input type="text" id="phoneTextEdit" placeholder="Phone Number">
+                    <input type="text" id="emailTextEdit" placeholder="Email">
+                    <input type="text" id="useridTextEdit" placeholder="User ID">
+                    <button type="button" id="editContactButton" class="buttons">Edit Contact</button>
+                    <br>
+                    <span id="contacteditResult"></span>
+                </div>
+                <div>
+                    <input type="text" id="nameSearchText" placeholder="Name of Contact">
+                    <input type="text" id="useridSearchText" placeholder="UserId of Contact">
+                    <button type="button" id="searchContactButton" class="buttons"> Search </button>
+                    <br>
+                    <span id="contactSearchResult"></span>
+                </div>
+                <div>
+                    <button type="button" id="logoutButton" class="buttons"> Log Out </button>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <p id="contactText" style="color: #aaaaaa;">
+                    hello
+                </p>
+            </div>
+        </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
+</html>
