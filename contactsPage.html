@@ -51,9 +51,8 @@
         <header>
             <h1>Your Contacts</h1>
         </header>
-        <div class="row">
-            <div class="col-sm-4">
-                <div>
+        <div>
+            <div>
                 <input type="text" id="nameTextAdd" placeholder="Name">
                 <input type="text" id="phoneTextAdd" placeholder="Phone Number">
                 <input type="text" id="emailTextAdd" placeholder="Email">
@@ -61,32 +60,74 @@
                 <button type="button" id="addContactButton" class="buttons"> Add Contact </button>
                 <br>
                 <span id="contactAddResult"></span>
-                </div>
-                <div>
-                    <input type="text" id="nameTextEdit" placeholder="Name">
-                    <input type="text" id="phoneTextEdit" placeholder="Phone Number">
-                    <input type="text" id="emailTextEdit" placeholder="Email">
-                    <input type="text" id="useridTextEdit" placeholder="User ID">
-                    <button type="button" id="editContactButton" class="buttons">Edit Contact</button>
-                    <br>
-                    <span id="contacteditResult"></span>
-                </div>
-                <div>
-                    <input type="text" id="nameSearchText" placeholder="Name of Contact">
-                    <input type="text" id="useridSearchText" placeholder="UserId of Contact">
-                    <button type="button" id="searchContactButton" class="buttons"> Search </button>
-                    <br>
-                    <span id="contactSearchResult"></span>
-                </div>
-                <div>
-                    <button type="button" id="logoutButton" class="buttons"> Log Out </button>
-                </div>
             </div>
-            <div class="col-sm-8">
-                <p id="contactText" style="color: #aaaaaa;">
-                    hello
-                </p>
+            <div>
+                <input type="text" id="nameTextEdit" placeholder="Name">
+                <input type="text" id="phoneTextEdit" placeholder="Phone Number">
+                <input type="text" id="emailTextEdit" placeholder="Email">
+                <input type="text" id="useridTextEdit" placeholder="User ID">
+                <button type="button" id="editContactButton" class="buttons">Edit Contact</button>
+                <br>
+                <span id="contacteditResult"></span>
             </div>
+            <div>
+                <input type="text" id="nameSearchText" placeholder="Name of Contact">
+                <input type="text" id="useridSearchText" placeholder="UserId of Contact">
+                <button type="button" id="searchContactButton" class="buttons"> Search </button>
+                <br>
+                <span id="contactSearchResult"></span>
+            </div>
+            <div>
+                <button type="button" id="logoutButton" class="buttons"> Log Out </button>
+            </div>
+            
+            <table class="table table-striped table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">Edit/Delete<br>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>
+                        <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                        <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                        </td>
+                      </tr>
+                    <tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>
+                            <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                            <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                            </td>
+                          </tr>
+                    </tr>
+                    <tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>
+                            <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                            <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                            </td>
+                        </tr>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
