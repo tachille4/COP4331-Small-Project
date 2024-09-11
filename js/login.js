@@ -59,7 +59,7 @@ function doLogin()
 
 				saveCookie();
 	
-				window.location.href = "contactmanager.html";
+				window.location.href = "contactsPage.html";
 			}
 		};
 		xhr.send(jsonPayload);
