@@ -71,7 +71,7 @@
         border-color: #008f9b;
         box-shadow: 0 0 6px 1px rgba(43, 220, 226, 0.7);
       }
-      .btn-turquoise /* Turquoise login button, white text */ {
+      .btn-purple /* Purple login button, white text */ {
         background-color: #5a4586;
         color: #ffffff;
       }
@@ -121,27 +121,27 @@
           <form id="loginForm">
             <div class="mb-4">
               <!-- Username field -->
+              <label for="usernameInput" class="form-label">Username</label>
               <input
                 type="text"
                 class="form-control form-control-lg"
                 id="usernameInput"
-                placeholder="Username"
                 required
               />
             </div>
             <div class="mb-4">
               <!-- Password field -->
+              <label for="passwordInput" class="form-label">Password</label>
               <input
                 type="password"
                 class="form-control form-control-lg"
                 id="passwordInput"
-                placeholder="Password"
                 required
               />
             </div>
             <div class="d-grid mt-5">
               <!-- Submit button -->
-              <button type="submit" class="btn btn-turquoise">SIGN IN</button>
+              <button type="submit" class="btn btn-purple">SIGN IN</button>
             </div>
           </form>
           <!-- Error message if the login failed -->
@@ -156,57 +156,57 @@
           <form id="registerForm">
             <div class="mb-4">
               <!-- First name field -->
+              <label for="firstNameInput" class="form-label">First name</label>
               <input
                 type="text"
                 class="form-control form-control-lg"
                 id="firstNameInput"
-                placeholder="First name"
                 required
               />
             </div>
             <div class="mb-4">
               <!-- Last name field -->
+              <label for="lastNameInput" class="form-label">Last name</label>
               <input
                 type="text"
                 class="form-control form-control-lg"
                 id="lastNameInput"
-                placeholder="Last name"
                 required
               />
             </div>
             <div class="mb-4">
               <!-- Username field -->
+              <label for="registerUsername" class="form-label">Username</label>
               <input
                 type="text"
                 class="form-control form-control-lg"
                 id="registerUsername"
-                placeholder="Username"
                 required
               />
             </div>
             <div class="mb-4">
               <!-- Password field -->
+              <label for="registerPassword" class="form-label">Password</label>
               <input
                 type="password"
                 class="form-control form-control-lg"
                 id="registerPassword"
-                placeholder="Password"
                 required
               />
             </div>
             <div class="mb-4">
               <!-- Confirm password field -->
+              <label for="confirmPassword" class="form-label">Confirm password</label>
               <input
                 type="password"
                 class="form-control form-control-lg"
                 id="confirmPassword"
-                placeholder="Confirm password"
                 required
               />
             </div>
             <div class="d-grid mt-5">
               <!-- Confirm registration button -->
-              <button type="submit" class="btn btn-turquoise">REGISTER</button>
+              <button type="submit" class="btn btn-purple">REGISTER</button>
             </div>
           </form>
           <!-- Whether or not registration succeeded (username already exists?)-->
