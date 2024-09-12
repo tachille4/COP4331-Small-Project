@@ -39,7 +39,7 @@ function doLogin()
 				if( userId < 1 )
 				{		
 					document.getElementById("loginResult")
-					loginResult.innerHTML = "Invalid login credentials.";
+					loginResult.innerHTML = "&#9888; Invalid login credentials.";
 
 					// Clear fields
 					document.getElementById("usernameInput").value = "";
@@ -85,7 +85,7 @@ function doRegister()
 	{
 		
 		registerResult.classList.add('error-msg');
-		document.getElementById("registerResult").innerHTML = "Error: passwords do not match!";
+		document.getElementById("registerResult").innerHTML = "&#9888; Passwords do not match!";
 
 		setTimeout(() =>
 			{
@@ -115,14 +115,14 @@ function doRegister()
 				{
 					document.getElementById("registerResult")
 					registerResult.classList.add('success-msg');
-					registerResult.innerHTML = "Account created successfully. Please log in.";
+					registerResult.innerHTML = "&#x2714; Account created successfully. Please log in.";
 
 				}
 				else if (this.status == 409)
 				{
 					document.getElementById("registerResult")
 					registerResult.classList.add('error-msg');
-					registerResult.innerHTML = jsonObject.error; // Error code for "username taken"
+					registerResult.innerHTML = "&#9888; Username unavailable.";
 				}
 				else
 				{
