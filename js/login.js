@@ -45,12 +45,6 @@ function doLogin()
 					document.getElementById("usernameInput").value = "";
 					document.getElementById("passwordInput").value = "";
 
-					// Reset error message after 3 seconds
-					setTimeout(() =>
-					{
-						document.getElementById("loginResult").innerHTML = "";
-					}, 3000);
-
 					return;
 				}
 		
@@ -146,14 +140,6 @@ function doRegister()
 		document.getElementById("registerUsername").value = "";
 		document.getElementById("registerPassword").value = "";
 		document.getElementById("confirmPassword").value = "";
-
-		// Reset error message after 3 seconds
-		setTimeout(() =>
-		{
-			document.getElementById("registerResult").innerHTML = "";
-			registerResult.classList.remove('error-msg');
-			registerResult.classList.remove('success-msg');
-		}, 3000);
 	}
 }
 
@@ -186,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function ()
         // Clear login fields
 		document.getElementById("usernameInput").value = "";
 		document.getElementById("passwordInput").value = "";
+		loginResult.innerHTML = "";
 		
 		loginCard.classList.remove('show'); // Prepare login card for fade out
         loginCard.classList.add('fade-out'); // Fade out login card
@@ -216,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function ()
             }, 200);
 
         }, 200);
+		
     });
 
     // Switch back to login card when login link is clicked
@@ -227,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function ()
 		document.getElementById("registerUsername").value = "";
 		document.getElementById("registerPassword").value = "";
 		document.getElementById("confirmPassword").value = "";
+		registerResult.innerHTML = "";
 		
 		registerCard.classList.remove('show'); // Prepare register card for fade out
         registerCard.classList.add('fade-out'); // Fade out register card
