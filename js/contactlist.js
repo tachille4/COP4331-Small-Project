@@ -1,6 +1,9 @@
 const urlBase = 'http://157.245.90.244/LAMPAPI';
 const extension = 'php';
 
+// Number of rows in table
+let numTableRows = document.getElementById("tableBody").childElementCount;
+
 // Function to add a new contact
 function addContact() {
     // Retrieve values from the input fields
@@ -80,12 +83,20 @@ function editContact(contactId) {
 }
 
 // Function to delete a contact
-function deleteContact(contactId) {
-    // Clear any previous result message
-    document.getElementById("contactDeleteResult").innerHTML = "";
+function deleteContact(contacted, child) {
+    // Access button's <tr> (table row)
+    let trParent = child.parentNode.parentNode;
+
+    // Gets name
+    let name = trParent.firstChild.nextSibling.innerHTML;
+
+    actionResultText.innerHTML = "";
+
+    // Removes the row from table
+    trParent.parentNode.removeChild(trParent);
 
     // Prepare the payload with the contact ID to be deleted
-    let tmp = { ContactId: contactId };
+    let tmp = {ContactId:contacted, Name:name};
     let jsonPayload = JSON.stringify(tmp);
 
     // Define the API endpoint URL for deleting the contact
@@ -102,7 +113,7 @@ function deleteContact(contactId) {
             if (this.readyState == 4 && this.status == 200) {
                 // Display success message and refresh the page after the contact is deleted
                 document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted.";
-                location.reload(); // Reload the page to refresh the contact list
+		checkForNoContacts();
             }
         };
         // Send the JSON payload to the server
@@ -111,6 +122,11 @@ function deleteContact(contactId) {
         // Display error message if something goes wrong
         document.getElementById("contactDeleteResult").innerHTML = err.message;
     }
+}
+function checkForNoContacts() {
+    if(--numTableRows == 0) {
+            //display "You don't have any contacts yet"
+        }
 }
 
 // Function to search for contacts
