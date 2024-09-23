@@ -105,15 +105,15 @@
                 <th scope="col">Edit/Delete Contact</th>
             </tr>
         </thead>
-        <tbody>
+        <body id="tableBody>
             <tr>
                 <th scope="row">1</th>
                 <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
                 <td>Otto</td>
                 <td>@mdo</td>
                 <td>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
                 </td>
             </tr>
             <tr>
@@ -122,8 +122,8 @@
                 <td>Otto</td>
                 <td>@mdo</td>
                 <td>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
                 </td>
             </tr>
             <tr>
@@ -132,12 +132,14 @@
                 <td>Otto</td>
                 <td>@mdo</td>
                 <td>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" id="editContactButton" class="buttons" style="margin-right:20px">🗑 Delete</button>
+                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
+                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
                 </td>
             </tr>
         </tbody>
     </table>
+    <!-- where the action result text would appear (e.g. "Contact was added!")-->
+    <span id="actionResult"></span>
 </body>
 
     <!-- Optional JavaScript -->
