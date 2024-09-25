@@ -1,8 +1,168 @@
 const urlBase = 'http://157.245.90.244/LAMPAPI';
 const extension = 'php';
 
-// Number of rows in table
-let numTableRows = document.getElementById("tableBody").childElementCount;
+// Obtain logged in user's cookie
+document.addEventListener('DOMContentLoaded', function()
+{
+    const userId = getCookie("userId");
+    console.log("UserId detected from cookie:", userId);
+
+    // Send back to login page if unrecognized, fetch personal contacts otherwise
+    if (!userId || userId <  1)
+    {
+        console.log("Invalid userId, redirecting back to login page");
+        window.location.href="index.html";
+    }
+    else
+    {
+        console.log("Valid userId, fetching contacts");
+        fetchContacts(userId);
+    }
+
+    // Log out the current user if logout button pressed
+    document.querySelector('.btn.btn-outline-dark.ms-auto').addEventListener('click', function(event)
+    {
+        logout();
+    });
+
+    var addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
+
+    document.querySelector('[data-bs-target="#addContactModal"]').addEventListener('click', function(event) {
+        event.preventDefault();
+        addContactModal.show();
+    });
+
+    document.getElementById('saveContactBtn').addEventListener('click', function() {
+        addContact();
+    });
+
+    var editContactModal = new bootstrap.Modal(document.getElementById('editContactModal'));
+
+    document.getElementById('saveEditContactBtn').addEventListener('click', function() {
+        saveEditContact();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+        const searchValue = this.value.trim();
+        searchContacts(searchValue);
+    });
+});
+
+function fetchContacts(userId)
+{
+    const xhr = new XMLHttpRequest();
+    const url = `${urlBase}/SearchContacts.${extension}`;
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+    xhr.onreadystatechange = function()
+    {
+        if (this.readyState == 4)
+        {
+            const contactsContainer = document.getElementById('contactsContainer');
+            if (this.status == 200)
+            {
+                const response = JSON.parse(this.responseText);
+                if (response.error || response.results.length === 0)
+                {
+                    displayNoContacts();
+                }
+                else
+                {
+                    displayContacts(response.results);
+                }
+            }
+            else
+            {
+                contactsContainer.innerHTML = '<p class="text-center">Could not fetch contacts...</p>';
+            }
+        }
+    };
+
+    const jsonPayload = JSON.stringify({ userId: userId, search: "" });
+    xhr.send(jsonPayload);
+}
+
+function displayContacts(contacts)
+{
+    const contactsContainer = document.getElementById('contactsContainer');
+
+    if (contacts.length === 0)
+    {
+        displayNoContacts();
+    }
+    else
+    {
+        let tableHTML = `
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+        `;
+
+        contacts.forEach(contact => {
+            tableHTML += `
+            <tr>
+                <td>${contact.Name}</td>
+                <td>${contact.Phone}</td>
+                <td>${contact.Email}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary edit-contact" data-id="${contact.ID}">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-contact" data-id="${contact.ID}">Delete</button>
+                </td>
+            </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+
+        contactsContainer.innerHTML = tableHTML;
+
+
+        document.querySelectorAll('.edit-contact').forEach(button => {
+            button.addEventListener('click', function() {
+                editContact(this.getAttribute('data-id'), this);
+            });
+        });
+
+        document.querySelectorAll('.delete-contact').forEach(button => {
+            button.addEventListener('click', function() {
+                deleteContact(this.getAttribute('data-id'), this);
+            });
+        });
+    }
+}
+
+function displayNoContacts()
+{
+    const contactsContainer = document.getElementById('contactsContainer');
+
+    contactsContainer.innerHTML = `
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">You have no contacts yet!</h5>
+                <p class="card-text">Press 'Add' to begin.</p>
+            </div>
+        </div>
+    `;
+}
+
+function getCookie(name)
+{
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 // Function to add a new contact
 function addContact() {
@@ -10,10 +170,14 @@ function addContact() {
     let name = document.getElementById("nameTextAdd").value;
     let phone = document.getElementById("phoneTextAdd").value;
     let email = document.getElementById("emailTextAdd").value;
-    let userId = document.getElementById("useridTextAdd").value;
 
-    // Clear any previous result message
-    document.getElementById("contactAddResult").innerHTML = "";
+    let userId = getCookie("userId");
+
+    if (!name || !phone || !email)
+    {
+        alert("Please fill in all fields.");
+        return;
+    }
 
     // Prepare the payload with the new contact information
     let tmp = { Name: name, Phone: phone, Email: email, UserId: userId };
@@ -27,120 +191,142 @@ function addContact() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     
-    try {
-        // Handle the response from the server
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // Display success message if the contact was added successfully
-                document.getElementById("contactAddResult").innerHTML = "Contact has been added.";
+   xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert("Error adding contact: " + jsonObject.error);
+                } else {
+                    let modal = bootstrap.Modal.getInstance(document.getElementById('addContactModal'));
+                    modal.hide();
+                    document.getElementById("addContactForm").reset();
+                    fetchContacts(userId);
+                }
+            } else {
+                alert("Error adding contact: " + this.status);
             }
-        };
-        // Send the JSON payload to the server
-        xhr.send(jsonPayload);
-    } catch (err) {
-        // Display error message if something goes wrong
-        document.getElementById("contactAddResult").innerHTML = err.message;
-    }
+        }
+    };
+    xhr.send(jsonPayload);
 }
 
 // Function to edit an existing contact
-function editContact(contactId) {
-    // Retrieve updated contact information from input fields
-    let name = document.getElementById("nameTextEdit").value;
-    let phone = document.getElementById("phoneTextEdit").value;
-    let email = document.getElementById("emailTextEdit").value;
-    let userId = document.getElementById("useridTextEdit").value;
+function editContact(contactId, button)
+{
 
-    // Clear any previous result message
-    document.getElementById("contactEditResult").innerHTML = "";
+    let row = button.closest('tr');
+    let name = row.cells[0].textContent;
+    let phone = row.cells[1].textContent;
+    let email = row.cells[2].textContent;
 
-    // Prepare the payload with the updated contact information
-    let tmp = { Name: name, Phone: phone, Email: email, UserId: userId };
+    document.getElementById('editContactId').value = contactId;
+    document.getElementById('editNameText').value = name;
+    document.getElementById('editPhoneText').value = phone;
+    document.getElementById('editEmailText').value = email;
+
+    var editContactModal = new bootstrap.Modal(document.getElementById('editContactModal'));
+    editContactModal.show();
+}
+
+function saveEditContact()
+{
+    let contactId = document.getElementById('editContactId').value;
+    let name = document.getElementById('editNameText').value;
+    let phone = document.getElementById('editPhoneText').value;
+    let email = document.getElementById('editEmailText').value;
+
+    let userId = getCookie("userId");
+
+    if (!name || !phone || !email)
+    {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    let tmp = { ID: contactId, Name: name, Phone: phone, Email: email };
     let jsonPayload = JSON.stringify(tmp);
 
-    // Define the API endpoint URL for editing the contact
-    let url = urlBase + '/ModifyContact.' + extension;
+    let url = `${urlBase}/ModifyContact.${extension}`;
 
-    // Create an XMLHttpRequest object
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    
-    try {
-        // Handle the response from the server
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // Display success message if the contact was modified successfully
-                document.getElementById("contactEditResult").innerHTML = "Contact has been modified.";
+
+     xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert("Error adding contact: " + jsonObject.error);
+                } else {
+                    let modal = bootstrap.Modal.getInstance(document.getElementById('editContactModal'));
+                    modal.hide();
+                    fetchContacts(userId);
+                }
+            } else {
+                alert("Error adding contact: " + this.status);
             }
-        };
-        // Send the JSON payload to the server
-        xhr.send(jsonPayload);
-    } catch (err) {
-        // Display error message if something goes wrong
-        document.getElementById("contactEditResult").innerHTML = err.message;
-    }
+        }
+    };
+    xhr.send(jsonPayload);
 }
 
 // Function to delete a contact
-function deleteContact(contacted, child) {
-    // Access button's <tr> (table row)
-    let trParent = child.parentNode.parentNode;
+function deleteContact(contactId, button) {
 
-    // Gets name
-    let name = trParent.firstChild.nextSibling.innerHTML;
+    if(!confirm("Are you sure you want to delete this contact?"))
+        return;
 
-    actionResultText.innerHTML = "";
+    let userId = getCookie("userId");
+    let contactName = button.closest('tr').querySelector('td:first-child').textContent;
 
-    // Removes the row from table
-    trParent.parentNode.removeChild(trParent);
+    console.log("Deleting contact with Name:", contactName);
+    console.log("User ID:", userId);
 
     // Prepare the payload with the contact ID to be deleted
-    let tmp = {ContactId:contacted, Name:name};
+    let tmp = {Name: contactName, UserID: userId};
     let jsonPayload = JSON.stringify(tmp);
 
     // Define the API endpoint URL for deleting the contact
-    let url = urlBase + '/DeleteContact.' + extension;
+    let url = urlBase + '/DeleteContact.' + extension + '?v=' + new Date().getTime();
 
     // Create an XMLHttpRequest object
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     
-    try {
-        // Handle the response from the server
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // Display success message and refresh the page after the contact is deleted
-                document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted.";
-		checkForNoContacts();
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            console.log("Response status:", this.status);
+            console.log("Response text:", this.responseText);
+            if (this.status == 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error) {
+                    alert("Error deleting contact: " + jsonObject.error);
+                } else {
+                    button.closest('tr').remove();
+                    if (document.querySelectorAll('#tableBody tr').length === 0)
+                        displayNoContacts();
+                }
+            } else {
+                alert("Error deleting contact. Server returned status: " + this.status);
             }
-        };
-        // Send the JSON payload to the server
-        xhr.send(jsonPayload);
-    } catch (err) {
-        // Display error message if something goes wrong
-        document.getElementById("contactDeleteResult").innerHTML = err.message;
-    }
+        }
+    };
+    xhr.send(jsonPayload);
 }
 function checkForNoContacts() {
-    if(--numTableRows == 0) {
-            //display "You don't have any contacts yet"
-        }
+    const tableBody = document.getElementById("tableBody");
+
+    if (!tableBody || tableBody.querySelectorAll('tr').length === 0)
+        displayNoContacts();
 }
 
 // Function to search for contacts
-function searchContacts() {
-    // Retrieve search query from input fields
-    let searchName = document.getElementById("nameSearchText").value;
-    let searchUserId = document.getElementById("useridSearchText").value;
+function searchContacts(searchValue) {
 
-    // Clear any previous result message
-    document.getElementById("contactSearchResult").innerHTML = "";
-
-    // Prepare the payload with the search criteria
-    let tmp = { search: searchName, userId: searchUserId };
-    let jsonPayload = JSON.stringify(tmp);
+    const userId = getCookie("userId");
 
     // Define the API endpoint URL for searching contacts
     let url = urlBase + '/SearchContacts.' + extension;
@@ -150,47 +336,39 @@ function searchContacts() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     
-    try {
-        // Handle the response from the server
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                // Display success message and populate the search results
-                document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved.";
-                let jsonObject = JSON.parse(xhr.responseText);
-
-                // Build the contact list from the search results
-                let contactList = "";
-                for (let i = 0; i < jsonObject.results.length; i++) {
-                    contactList += jsonObject.results[i].Name + " - " + jsonObject.results[i].Phone + " - " + jsonObject.results[i].Email;
-                    if (i < jsonObject.results.length - 1) {
-                        contactList += "<br />\r\n";
-                    }
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            const contactsContainer = document.getElementById('contactsContainer');
+            if (this.status == 200) {
+                const response = JSON.parse(this.responseText)
+                if (response.error) {
+                    contactsContainer.innerHTML = '<p class="text-center">No contacts found!</p>';
+                } else {
+                    displayContacts(response.results);
                 }
-
-                // Display the contact list in the designated HTML element
-                document.getElementById("contactText").innerHTML = contactList;
+            } else {
+                contactsContainer.innerHTML = '<p class="text-center">Could not fetch contacts!</p>';
             }
-        };
-        // Send the JSON payload to the server
-        xhr.send(jsonPayload);
-    } catch (err) {
-        // Display error message if something goes wrong
-        document.getElementById("contactSearchResult").innerHTML = err.message;
-    }
+        }
+    };
+
+    let tmp = { userId: userId, search: searchValue };
+    let jsonPayload = JSON.stringify(tmp);
+    xhr.send(jsonPayload);
 }
 
 // Function to log out the user
-function logout() {
-    // Clear session or token data (e.g., from localStorage or sessionStorage)
-    localStorage.removeItem("userToken"); // Remove token from localStorage
-    sessionStorage.removeItem("userToken"); // Remove token from sessionStorage
+function logout()
+{
+    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "firstName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "lastName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-    // Redirect to the login page after clearing the session/token
-    window.location.href = "index.html"; // Redirect to the login page 
-	}
+    window.location.href = "index.html";
+}
 
-// Bind the logout button to the logout function
-document.querySelector('.btn.btn-outline-dark.ms-auto').addEventListener('click', function(event) {
-	event.preventDefault(); // Prevent default behavior of the link
-    logout(); // Call the logout function
+// Add event listener for the search form
+document.querySelector('form.form-inline').addEventListener('submit', function(event) {
+    event.preventDefault();
+    searchContacts();
 });
