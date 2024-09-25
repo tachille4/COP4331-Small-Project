@@ -1,154 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
 
     <!-- Mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Page title in tab -->
-    <title>Login - Contact Manager</title>
+    <title>View - Contact Manager</title>
 
     <link rel="icon" href="images/icebergcelllogo.webp" type="image/x-icon" />
 
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- Import font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Moderustic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Moderustic:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS styles -->
     <style>
-        body, html { 
-            height: 100%;
-            font-family: "Moderustic", sans-serif;
-        }
-        body { 
-            background-image: url("images/icebergpurple.avif");
-            background-size: cover; 
-            background-position: center center; 
-            background-repeat: no-repeat; 
-            backdrop-filter: blur(8px); 
-        }
-        header {
-            background-color: #F1F1F1;
-            padding: 0;
-        }
-        .navbar {
-            margin-bottom: 0;
-        }
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-        }
-        .navbar-brand img {
-            max-width: 80px;
-            margin-right: 15px;
-        }
-        .navbar-brand h1 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        .navbar-toggler {
-            border: none;
-        }
-        .form-inline {
-            display: flex;
-            align-items: center;
-        }
-        .form-control {
-            width: 300px;
-        }
+      body,
+      html {
+        height: 100%;
+        font-family: "Moderustic", sans-serif;
+      }
+      body {
+        background-image: url("images/icebergpurple.avif");
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        backdrop-filter: blur(8px);
+      }
+      header {
+        background-color: #f1f1f1;
+        padding: 0;
+      }
+      .navbar {
+        margin-bottom: 0;
+      }
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+      }
+      .navbar-brand img {
+        max-width: 80px;
+        margin-right: 15px;
+      }
+      .navbar-brand h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      .navbar-toggler {
+        border: none;
+      }
+      .form-inline {
+        display: flex;
+        align-items: center;
+      }
+      .form-control {
+        width: 300px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">
-                <img src="images/icebergcelllogo.webp" alt="Logo"> 
-                <h1>Your Contacts</h1>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+          <img src="images/icebergcelllogo.webp" alt="Logo" />
+          <h1>Your Contacts</h1>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse p-l-5" id="navbarTogglerDemo02">
-                <div class="d-flex">
-                    <!-- Add Contact Button -->
-                    <a href="#" class="btn btn-outline-dark me-3">Add Contact</a>
-                </div>
+        <div class="collapse navbar-collapse p-l-5" id="navbarTogglerDemo02">
+          <div class="d-flex">
+            <!-- Add Contact Button -->
+            <a
+              href="#"
+              class="btn btn-outline-dark me-3"
+              data-bs-toggle="modal"
+              data-bs-target="#addContactModal"
+              >Add Contact</a
+            >
+          </div>
 
-                <!-- Search Form -->
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-dark" type="submit">Search</button>
-                </form>
+          <!-- Search Form -->
+          <form class="form-inline my-2 my-lg-0" id="searchForm">
+            <input
+              class="form-control me-2"
+              type="search"
+              id="searchInput"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+          </form>
 
-                <!-- Logout Button -->
-                <a href="#" id="logoutButton" class="btn btn-outline-dark ms-auto">Logout</a>
-
-            </div>
-        </nav>
+          <!-- Logout Button -->
+          <a href="#" id="logoutButton" class="btn btn-outline-dark ms-auto"
+            >Logout</a
+          >
+        </div>
+      </nav>
     </header>
+    <!-- Container to hold the dynamic table/contact cards -->
+    <div class="container mt-4">
+      <div id="contactsContainer"></div>
+    </div>
 
-    <table class="table table-striped table-dark table-hover">
-        <thead>
-            <tr>
-                <th scope="col">User ID</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Phone Number</th>
-                <th scope="col">Email Address</th>
-                <th scope="col">Edit/Delete Contact</th>
-            </tr>
-        </thead>
-        <body id="tableBody>
-            <tr>
-                <th scope="row">1</th>
-                <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>
-                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>
-                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td><input type="text" id="nameTextAdd" placeholder="Name"></td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>
-                    <button type="button" onclick="editContact(this)" class="buttons" style="margin-right:20px">🖊 Edit</button>
-                    <button type="button" onclick="deleteContact(this)" class="buttons" style="margin-right:20px">🗑 Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- where the action result text would appear (e.g. "Contact was added!")-->
-    <span id="actionResult"></span>
-</body>
+    <!-- Add contact modal -->
+    <div
+      class="modal fade"
+      id="addContactModal"
+      tabindex="-1"
+      aria-labelledby="addContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addContactModalLabel">
+              Add New Contact
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="addContactForm">
+              <div class="mb-3">
+                <label for="nameTextAdd" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nameTextAdd"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="phoneTextAdd" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phoneTextAdd"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="emailTextAdd" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="emailTextAdd"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="saveContactBtn">
+              Save Contact
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7/zpiMx+tpx5p/xclnkszWQ7bf60BefRL7D2VWfeGHDvAwBN8onT/REp2y5cjz4i" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9bFTGIHtwL5WauZut+4mOK9pFQ2iF34XctLI88VSYKUEfQiG2umsc+z" crossorigin="anonymous"></script>
-
+    <!-- Edit contact modal -->
+    <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editContactForm">
+          <input type="hidden" id="editContactId">
+          <div class="mb-3">
+            <label for="editNameText" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editNameText" required>
+          </div>
+          <div class="mb-3">
+            <label for="editPhoneText" class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="editPhoneText" required>
+          </div>
+          <div class="mb-3">
+            <label for="editEmailText" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmailText" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveEditContactBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- Contact List JavaScript -->
-    <script src ="js/contactlist.js"></script>
+    <script src="js/contactlist.js"></script>
+  </body>
 </html>
-
