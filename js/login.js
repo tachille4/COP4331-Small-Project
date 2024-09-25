@@ -15,6 +15,9 @@ function doLogin()
 	let login = document.getElementById("usernameInput").value;
 	let password = document.getElementById("passwordInput").value;
     //	var hash = md5( password );
+
+	console.log("Attempted to login with username: ", login);
+	console.log("Attempted to login with password: ", password);
 	
 	document.getElementById("loginResult").innerHTML = "";
 
@@ -47,13 +50,15 @@ function doLogin()
 
 					return;
 				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
+				else
+				{
+					firstName = jsonObject.firstName;
+					lastName = jsonObject.lastName;
 
-				saveCookie();
-	
-				window.location.href = "contactsPage.html";
+					saveCookie();
+
+					window.location.href = "contactsPage.html";
+				}
 			}
 		};
 		xhr.send(jsonPayload);
@@ -251,10 +256,14 @@ document.addEventListener('DOMContentLoaded', function ()
 
 function saveCookie()
 {
-	let minutes = 20;
-	let date = new Date();
-	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+    let minutes = 20;
+    let date = new Date();
+    date.setTime(date.getTime()+(minutes*60*1000));    
+    document.cookie = "firstName=" + firstName + ";expires=" + date.toGMTString() + ";path=/";
+    document.cookie = "lastName=" + lastName + ";expires=" + date.toGMTString() + ";path=/";
+    document.cookie = "userId=" + userId + ";expires=" + date.toGMTString() + ";path=/";
+    
+    console.log("Cookies set:", document.cookie);
 }
 
 function readCookie()
