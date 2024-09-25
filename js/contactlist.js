@@ -4,6 +4,10 @@ const extension = 'php';
 // Obtain logged in user's cookie
 document.addEventListener('DOMContentLoaded', function()
 {
+    
+    console.log("DOMContentLoaded event worked");
+    console.log("All cookies:", document.cookie);
+
     const userId = getCookie("userId");
     console.log("UserId detected from cookie:", userId);
 
@@ -161,6 +165,7 @@ function getCookie(name)
 {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
+    console.log("Cookie parts for", name, ":", parts);
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
@@ -366,9 +371,3 @@ function logout()
 
     window.location.href = "index.html";
 }
-
-// Add event listener for the search form
-document.querySelector('form.form-inline').addEventListener('submit', function(event) {
-    event.preventDefault();
-    searchContacts();
-});
