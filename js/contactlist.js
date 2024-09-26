@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     // Log out the current user if logout button pressed
-    document.querySelector('.btn.btn-outline-dark.ms-auto').addEventListener('click', function(event)
+    document.querySelector('.btn btn-primary ms-auto').addEventListener('click', function(event)
     {
         logout();
     });
