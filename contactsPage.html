@@ -65,12 +65,13 @@
       .form-control {
         width: 300px;
       }
+      
     </style>
   </head>
 
   <body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
           <img src="images/icebergcelllogo.webp" alt="Logo" />
           <h1>Your Contacts</h1>
@@ -92,7 +93,7 @@
             <!-- Add Contact Button -->
             <a
               href="#"
-              class="btn btn-outline-dark me-3"
+              class="btn btn-primary me-3"
               data-bs-toggle="modal"
               data-bs-target="#addContactModal"
               >Add Contact</a
@@ -108,11 +109,11 @@
               placeholder="Search"
               aria-label="Search"
             />
-            <button class="btn btn-outline-dark" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Search</button>
           </form>
 
           <!-- Logout Button -->
-          <a href="#" id="logoutButton" class="btn btn-outline-dark ms-auto"
+          <a href="#" id="logoutButton" class="btn btn-primary"
             >Logout</a
           >
         </div>
@@ -132,7 +133,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-dark text-light">
           <div class="modal-header">
             <h5 class="modal-title" id="addContactModalLabel">
               Add New Contact
@@ -194,7 +195,7 @@
     <!-- Edit contact modal -->
     <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content bg-dark text-light">
       <div class="modal-header">
         <h5 class="modal-title" id="editContactModalLabel">Edit Contact</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
