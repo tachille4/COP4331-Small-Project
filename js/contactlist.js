@@ -1,10 +1,6 @@
 const urlBase = 'http://group3cop4331.com/LAMPAPI';
 const extension = 'php';
 
-let validEmailRegex = false;
-let validPhoneRegex = false;
-let validNameLength = false;
-
 // Obtain logged in user's cookie
 document.addEventListener('DOMContentLoaded', function()
 {
@@ -320,26 +316,28 @@ function editContact(contactId, button)
 function saveEditContact()
 {
     let contactId = document.getElementById('editContactId').value;
-    let name = document.getElementById('editNameInput').value;
-    let phone = document.getElementById('editPhoneInput').value;
-    let email = document.getElementById('editEmailInput').value;
+    let nameInput = document.getElementById('editNameInput');
+    let phoneInput = document.getElementById('editPhoneInput');
+    let emailInput = document.getElementById('editEmailInput');
     let userId = getCookie("userId");
 
-    let isValid = validateName(name, 'nameFeedbackEdit') && validatePhone(phone, 'phoneFeedbackEdit') && validateEmail(email, 'emailFeedbackEdit');
+    let isNameValid = validateName(name, 'nameFeedbackEdit');
+    let isPhoneValid = validatePhone(phoneInput, 'phoneFeedbackEdit');
+    let isEmailValid = validateEmail(email, 'emailFeedbackEdit');
 
-    if (!isValid)
+    if (!isNameValid || !isPhoneValid || !isEmailValid)
     {
         alert("Please format the data as instructed.");
         return;
     }
 
-    if (!name.value || !phone.value || !email.value)
+    if (!nameInput.value || !phoneInput.value || !emailInput.value)
     {
         alert("Please fill in all fields.");
         return;
     }
 
-    let tmp = { ID: contactId, Name: name.value, Phone: phone.value, Email: email.value };
+    let tmp = { ID: contactId, Name: nameInput.value, Phone: phoneInput.value, Email: emailInput.value };
     let jsonPayload = JSON.stringify(tmp);
 
     let url = `${urlBase}/ModifyContact.${extension}`;
