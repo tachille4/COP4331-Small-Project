@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
 
     <!-- Mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Page title in tab -->
     <title>View - Contact Manager</title>
@@ -78,51 +78,94 @@
         font-size:0.85rem;
         margin-left: 5px;
       }
+      @media (max-width: 767px) {
+        body {
+          font-size: 14px;
+        }
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .navbar-brand img {
+          max-width: 40px;
+        }
+        .navbar-brand h1 {
+          font-size: 1.2rem;
+        }
+        .container {
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        .table {
+          font-size: 0.8rem;
+        }
+        .btn {
+          padding: 0.25rem 0.5rem;
+          font-size: 0.8rem;
+        }
+        .form-control {
+          font-size: 0.9rem;
+        }
+        th, td {
+          padding: 0.3rem !important;
+        }
+        .navbar-collapse {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .form-inline {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+        .form-control {
+          width: 100%;
+        }
+        #logoutButton {
+          margin-left: 0 !important;
+        }
+      }
     </style>
   </head>
 
   <body>
-    <header>
+     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#" style="zoom: 1.2;">
-          <img src="images/icebergcelllogo.webp" alt="Logo"/>
-          <h1>| Your Contacts</h1>
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse p-l-5 d-inline-flex justify-content-end" id="navbarTogglerDemo02">
-          <!-- Add Contact Button -->
-          <a
-            href="#"
-            class="btn btn-primary me-3"
-            data-bs-toggle="modal"
-            data-bs-target="#addContactModal"
-            >Add Contact</a
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="images/icebergcelllogo.webp" alt="Logo"/>
+            <h1>Your Contacts</h1>
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-          <!-- Search Form -->
-          <form class="form-inline my-2 my-lg-0 ms-1 me-5" id="searchForm">
-            <input
-              class="form-control"
-              type="search"
-              id="searchInput"
-              placeholder="Search Name"
-              aria-label="Search"
-            />
-          </form>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <a
+              href="#"
+              class="btn btn-primary mb-2"
+              data-bs-toggle="modal"
+              data-bs-target="#addContactModal"
+            >Add Contact</a>
 
-          <!-- Logout Button -->
-          <a href="#" id="logoutButton" class="btn btn-outline-info ms-5 me-3">Logout</a>
+            <form class="form-inline mb-2" id="searchForm">
+              <input
+                class="form-control"
+                type="search"
+                id="searchInput"
+                placeholder="Search Name"
+                aria-label="Search"
+              />
+            </form>
+
+            <a href="#" id="logoutButton" class="btn btn-outline-info">Logout</a>
+          </div>
         </div>
       </nav>
     </header>
