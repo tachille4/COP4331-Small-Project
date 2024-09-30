@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     // Log out the current user if logout button pressed
-    document.querySelector('.btn.btn-outline-info.ms-5.me-3').addEventListener('click', () => logout);
+    document.querySelector('.btn.btn-outline-info.ms-5.me-3').addEventListener('click', logout);
 
     // Add contact eventListeners
     var addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
@@ -241,24 +241,31 @@ function getCookie(name)
 
 // Function to add a new contact
 function addContact() {
-    // Check if inputs follow correct regax + reset variables
-    if (!validNameLength || !validEmailRegex || !validPhoneRegex) return;
-    validEmailRegex = validPhoneRegex = validNameLength = false;
 
     // Retrieve values from the input fields + userId
-    let name = document.getElementById("nameInputAdd").value;
-    let phone = document.getElementById("phoneInputAdd").value;
-    let email = document.getElementById("emailInputAdd").value;
+    let nameInput = document.getElementById("nameInputAdd");
+    let phoneInput = document.getElementById("phoneInputAdd");
+    let emailInput = document.getElementById("emailInputAdd");
     let userId = getCookie("userId");
 
-    if (!name || !phone || !email)
+    let isNameValid = validateName(nameInput, 'nameFeedbackAdd');
+    let isPhoneValid = validatePhone(phoneInput, 'phoneFeedbackAdd');
+    let isEmailValid = validateEmail(emailInput, 'emailFeedbackAdd');
+
+    if (!isNameValid || !isPhoneValid || !isEmailValid)
     {
-        alert("Please fill in all fields.");
+        alert("Please make sure that all entries are in valid forms.");
+        return;
+    }
+
+    if (!nameInput.value || !phoneInput.value || !emailInput.value)
+    {
+        alert("Please fill in all fields");
         return;
     }
 
     // Prepare the payload with the new contact information
-    let tmp = { Name: name, Phone: phone, Email: email, UserId: userId };
+    let tmp = { Name: nameInput.value, Phone: phoneInput.value, Email: emailInput.value, UserId: userId };
     let jsonPayload = JSON.stringify(tmp);
 
     // Define the API endpoint URL for adding the contact
