@@ -328,9 +328,9 @@ function saveEditContact()
     let emailInput = document.getElementById('editEmailInput');
     let userId = getCookie("userId");
 
-    let isNameValid = validateName(name, 'nameFeedbackEdit');
+    let isNameValid = validateName(nameInput, 'nameFeedbackEdit');
     let isPhoneValid = validatePhone(phoneInput, 'phoneFeedbackEdit');
-    let isEmailValid = validateEmail(email, 'emailFeedbackEdit');
+    let isEmailValid = validateEmail(emailInput, 'emailFeedbackEdit');
 
     if (!isNameValid || !isPhoneValid || !isEmailValid)
     {
