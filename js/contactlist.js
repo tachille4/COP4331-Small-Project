@@ -42,16 +42,17 @@ document.addEventListener('DOMContentLoaded', function()
         document.getElementById("phoneFeedbackAdd").textContent = "";
         addContactModal.show();
     });
-    document.getElementById('nameInputAdd').addEventListener('input', () => validateEmail('nameInputAdd', 'nameFeedbackAdd'));
-    document.getElementById('emailInputAdd').addEventListener('input', () => validateEmail('emailInputAdd', 'emailFeedbackAdd'));
-    document.getElementById('phoneInputAdd').addEventListener('input', () => validatePhone('phoneInputAdd', 'phoneFeedbackAdd'));
+    document.getElementById('nameInputAdd').addEventListener('input', event => validateEmail(event.target, 'nameFeedbackAdd'));
+    document.getElementById('emailInputAdd').addEventListener('input', event => validateEmail(event.target, 'emailFeedbackAdd'));
+    document.getElementById('phoneInputAdd').addEventListener('input', event => validatePhone(event.target, 'phoneFeedbackAdd'));
     document.getElementById('saveAddContactBtn').addEventListener('click', addContact);
 
     // Edit Contact eventListeners
-    document.getElementById('editNameInput').addEventListener('input', () => validateEmail('editNameInput', 'nameFeedbackEdit'));
-    document.getElementById('editEmailInput').addEventListener('input', () => validateEmail('editEmailInput', 'emailFeedbackEdit'));
-    document.getElementById('editPhoneInput').addEventListener('input', () => validatePhone('editPhoneInput', 'phoneFeedbackEdit'));
+    document.getElementById('editNameInput').addEventListener('input', event => validateEmail(event.target, 'nameFeedbackEdit'));
+    document.getElementById('editEmailInput').addEventListener('input', event => validateEmail(event.target, 'emailFeedbackEdit'));
+    document.getElementById('editPhoneInput').addEventListener('input', event => validatePhone(event.target, 'phoneFeedbackEdit'));
     document.getElementById('saveEditContactBtn').addEventListener('click', saveEditContact);
+    
     // Search Contacts eventListeners
     document.getElementById("searchInput").addEventListener("input", function() 
     {
@@ -60,59 +61,59 @@ document.addEventListener('DOMContentLoaded', function()
     });
 });
 
-function validateEmail(elementId)
+function validateEmail(inputElement, feedbackId)
 {
-    const emailInput = this.value;
-    const emailFeedback = document.getElementById(elementId);
+    const emailInput = inputElement.value;
+    const emailFeedback = document.getElementById(feedbackId);
     const emailRegex = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     
     if (emailRegex.test(emailInput)) 
     {
         emailFeedback.textContent = "";
-        this.classList.remove('invalid-regex');
+        inputElement.classList.remove('invalid-regex');
         validEmailRegex = true;
     } else 
     {
-        emailFeedback.textContent = "*Invalid Email Address";
-        this.classList.add('invalid-regex');
+        emailFeedback.textContent = "*Check the format of the Email Address";
+        inputElement.classList.add('invalid-regex');
         validEmailRegex = false;
     }
 }
 
-function validatePhone(elementId)
+function validatePhone(inputElement, feedbackId)
 {
-    const phoneInput = this.value;
-    const phoneFeedback = document.getElementById(elementId);
-    const phoneRegex = /^(\+([1-9]{1,2}-[0-9]{3,4})|([1-9]{1,3}) )?((((\([0-9]{3}\) ?)|([0-9]{3}-))[0-9]{3}-[0-9]{4})|[0-9]{10})$/;
+    const phoneInput = inputElement.value;
+    const phoneFeedback = document.getElementById(feedbackId);
+    const phoneRegex = /^(\+(([1-9]{1,2}-[0-9]{3,4})|([1-9]{1,3})) )?((((\([0-9]{3}\) ?)|([0-9]{3}-))[0-9]{3}-[0-9]{4})|[0-9]{10})$/;
 
     if (phoneRegex.test(phoneInput)) 
     {
         phoneFeedback.textContent = "";
-        this.classList.remove('invalid-regex');
+        inputElement.classList.remove('invalid-regex');
         validPhoneRegex = true;
     } else 
     {
-        phoneFeedback.textContent = "*Invalid Phone Number";
-        this.classList.add('invalid-regex');
+        phoneFeedback.textContent = "*Check the format of the Phone Number";
+        inputElement.classList.add('invalid-regex');
         validPhoneRegex = false;
     }
 }
 
-function validateName(elementId)
+function validateName(inputElement, feedbackId)
 {
-    const nameInput = this.value.length;
-    const nameFeedback = document.getElementById(elementId);
+    const inputLength = inputElement.value.length;
+    const nameFeedback = document.getElementById(feedbackId);
 
-    if (nameInput > 0 && nameInput < 51)
+    if (inputLength > 50)
     {
-        nameFeedback.textContent = "";
-        this.classList.remove('invalid-regex');
-        validNameLength = true;
+        nameFeedback.textContent = "*Name Lengths can't exceed 50 characters";
+        inputElement.classList.add('invalid-regex');
+        validNameLength = false;
     } else 
     {
-        nameFeedback.textContent = "*Name Length must be between 1-50";
-        this.classList.add('invalid-regex');
-        validNameLength = false;
+        nameFeedback.textContent = "";
+        inputElement.classList.remove('invalid-regex');
+        validNameLength = true;
     }
 }
 
