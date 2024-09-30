@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
 
     // Log out the current user if logout button pressed
-    document.querySelector('.btn.btn-outline-dark.ms-auto').addEventListener('click', logout);
+    document.querySelector('.btn.btn-outline-info.ms-5.me-3').addEventListener('click', () => logout);
 
     // Add contact eventListeners
     var addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
@@ -37,18 +37,21 @@ document.addEventListener('DOMContentLoaded', function()
         document.getElementById("nameInputAdd").value = "";
         document.getElementById("phoneInputAdd").value = "";
         document.getElementById("emailInputAdd").value = "";
+        document.getElementById("nameInputAdd").classList.remove('invalid-regex');
+        document.getElementById("phoneInputAdd").classList.remove('invalid-regex');
+        document.getElementById("emailInputAdd").classList.remove('invalid-regex');
         document.getElementById("nameFeedbackAdd").textContent = "";
         document.getElementById("emailFeedbackAdd").textContent = "";
         document.getElementById("phoneFeedbackAdd").textContent = "";
         addContactModal.show();
     });
-    document.getElementById('nameInputAdd').addEventListener('input', event => validateEmail(event.target, 'nameFeedbackAdd'));
+    document.getElementById('nameInputAdd').addEventListener('input', event => validateName(event.target, 'nameFeedbackAdd'));
     document.getElementById('emailInputAdd').addEventListener('input', event => validateEmail(event.target, 'emailFeedbackAdd'));
     document.getElementById('phoneInputAdd').addEventListener('input', event => validatePhone(event.target, 'phoneFeedbackAdd'));
     document.getElementById('saveAddContactBtn').addEventListener('click', addContact);
 
     // Edit Contact eventListeners
-    document.getElementById('editNameInput').addEventListener('input', event => validateEmail(event.target, 'nameFeedbackEdit'));
+    document.getElementById('editNameInput').addEventListener('input', event => validateName(event.target, 'nameFeedbackEdit'));
     document.getElementById('editEmailInput').addEventListener('input', event => validateEmail(event.target, 'emailFeedbackEdit'));
     document.getElementById('editPhoneInput').addEventListener('input', event => validatePhone(event.target, 'phoneFeedbackEdit'));
     document.getElementById('saveEditContactBtn').addEventListener('click', saveEditContact);
@@ -303,6 +306,9 @@ function editContact(contactId, button)
     document.getElementById('editPhoneInput').value = phone;
     document.getElementById('editEmailInput').value = email;
 
+    document.getElementById("editNameInput").classList.remove('invalid-regex');
+    document.getElementById("editPhoneInput").classList.remove('invalid-regex');
+    document.getElementById("editEmailInput").classList.remove('invalid-regex');
     document.getElementById("nameFeedbackEdit").textContent = "";
     document.getElementById("emailFeedbackEdit").textContent = "";
     document.getElementById("phoneFeedbackEdit").textContent = "";
