@@ -1,13 +1,16 @@
-const urlBase = 'http://157.245.90.244/LAMPAPI';
+const urlBase = 'http://group3cop4331.com/LAMPAPI';
 const extension = 'php';
+
+let validEmailRegex = false;
+let validPhoneRegex = false;
+let validNameLength = false;
 
 // Obtain logged in user's cookie
 document.addEventListener('DOMContentLoaded', function()
 {
-    
     console.log("DOMContentLoaded event worked");
     console.log("All cookies:", document.cookie);
-
+    
     const userId = getCookie("userId");
     console.log("UserId detected from cookie:", userId);
 
@@ -20,37 +23,98 @@ document.addEventListener('DOMContentLoaded', function()
     else
     {
         console.log("Valid userId, fetching contacts");
-        fetchContacts(userId);
+        fetchContacts(userId); // Displays any contacts if no error
     }
 
     // Log out the current user if logout button pressed
-    document.getElementById('logoutButton').addEventListener('click', function(event)
-    {
-        logout();
-    });
+    document.querySelector('.btn.btn-outline-dark.ms-auto').addEventListener('click', logout);
 
+    // Add contact eventListeners
     var addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
-
-    document.querySelector('[data-bs-target="#addContactModal"]').addEventListener('click', function(event) {
+    document.querySelector('[data-bs-target="#addContactModal"]').addEventListener('click', function(event) 
+    {
         event.preventDefault();
+        document.getElementById("nameInputAdd").value = "";
+        document.getElementById("phoneInputAdd").value = "";
+        document.getElementById("emailInputAdd").value = "";
+        document.getElementById("nameFeedbackAdd").textContent = "";
+        document.getElementById("emailFeedbackAdd").textContent = "";
+        document.getElementById("phoneFeedbackAdd").textContent = "";
         addContactModal.show();
     });
+    document.getElementById('nameInputAdd').addEventListener('input', () => validateEmail('nameInputAdd', 'nameFeedbackAdd'));
+    document.getElementById('emailInputAdd').addEventListener('input', () => validateEmail('emailInputAdd', 'emailFeedbackAdd'));
+    document.getElementById('phoneInputAdd').addEventListener('input', () => validatePhone('phoneInputAdd', 'phoneFeedbackAdd'));
+    document.getElementById('saveAddContactBtn').addEventListener('click', addContact);
 
-    document.getElementById('saveContactBtn').addEventListener('click', function() {
-        addContact();
-    });
-
-    var editContactModal = new bootstrap.Modal(document.getElementById('editContactModal'));
-
-    document.getElementById('saveEditContactBtn').addEventListener('click', function() {
-        saveEditContact();
-    });
-
-    document.getElementById("searchInput").addEventListener("input", function() {
+    // Edit Contact eventListeners
+    document.getElementById('editNameInput').addEventListener('input', () => validateEmail('editNameInput', 'nameFeedbackEdit'));
+    document.getElementById('editEmailInput').addEventListener('input', () => validateEmail('editEmailInput', 'emailFeedbackEdit'));
+    document.getElementById('editPhoneInput').addEventListener('input', () => validatePhone('editPhoneInput', 'phoneFeedbackEdit'));
+    document.getElementById('saveEditContactBtn').addEventListener('click', saveEditContact);
+    // Search Contacts eventListeners
+    document.getElementById("searchInput").addEventListener("input", function() 
+    {
         const searchValue = this.value.trim();
         searchContacts(searchValue);
     });
 });
+
+function validateEmail(elementId)
+{
+    const emailInput = this.value;
+    const emailFeedback = document.getElementById(elementId);
+    const emailRegex = /^[a-zA-Z0-9!#$%&'*+-/=?^_`{|}~.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (emailRegex.test(emailInput)) 
+    {
+        emailFeedback.textContent = "";
+        this.classList.remove('invalid-regex');
+        validEmailRegex = true;
+    } else 
+    {
+        emailFeedback.textContent = "*Invalid Email Address";
+        this.classList.add('invalid-regex');
+        validEmailRegex = false;
+    }
+}
+
+function validatePhone(elementId)
+{
+    const phoneInput = this.value;
+    const phoneFeedback = document.getElementById(elementId);
+    const phoneRegex = /^(\+([1-9]{1,2}-[0-9]{3,4})|([1-9]{1,3}) )?((((\([0-9]{3}\) ?)|([0-9]{3}-))[0-9]{3}-[0-9]{4})|[0-9]{10})$/;
+
+    if (phoneRegex.test(phoneInput)) 
+    {
+        phoneFeedback.textContent = "";
+        this.classList.remove('invalid-regex');
+        validPhoneRegex = true;
+    } else 
+    {
+        phoneFeedback.textContent = "*Invalid Phone Number";
+        this.classList.add('invalid-regex');
+        validPhoneRegex = false;
+    }
+}
+
+function validateName(elementId)
+{
+    const nameInput = this.value.length;
+    const nameFeedback = document.getElementById(elementId);
+
+    if (nameInput > 0 && nameInput < 51)
+    {
+        nameFeedback.textContent = "";
+        this.classList.remove('invalid-regex');
+        validNameLength = true;
+    } else 
+    {
+        nameFeedback.textContent = "*Name Length must be between 1-50";
+        this.classList.add('invalid-regex');
+        validNameLength = false;
+    }
+}
 
 function fetchContacts(userId)
 {
@@ -79,7 +143,13 @@ function fetchContacts(userId)
             }
             else
             {
-                contactsContainer.innerHTML = '<p class="text-center">Could not fetch contacts...</p>';
+                contactsContainer.innerHTML = `
+                    <div class="card text-center">
+                        <div class="card-body pb-1">
+                            <p class="text-center">Could not fetch contacts...</p>
+                        </div>
+                    </div>
+                `;
             }
         }
     };
@@ -99,13 +169,13 @@ function displayContacts(contacts)
     else
     {
         let tableHTML = `
-        <table class="table table-dark table-striped table-hover">
+        <table class="table table-dark table-striped table-hover" style="zoom: 1.05">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Actions</th>
+                    <th style="width: 30%;">Name</th>
+                    <th style="width: 22%;">Phone</th>
+                    <th style="width: 30%;">Email</th>
+                    <th style="width: 18%;">Actions</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -118,8 +188,8 @@ function displayContacts(contacts)
                 <td>${contact.Phone}</td>
                 <td>${contact.Email}</td>
                 <td>
-                    <button class="btn btn-sm btn-primary edit-contact" data-id="${contact.ID}">Edit</button>
-                    <button class="btn btn-sm btn-danger delete-contact" data-id="${contact.ID}">Delete</button>
+                    <button class="btn btn-sm btn-outline-primary edit-contact" style="margin-right: 5px" data-id="${contact.ID}">Edit</button>
+                    <button class="btn btn-sm btn-outline-danger delete-contact" data-id="${contact.ID}">Delete</button>
                 </td>
             </tr>
             `;
@@ -171,11 +241,14 @@ function getCookie(name)
 
 // Function to add a new contact
 function addContact() {
-    // Retrieve values from the input fields
-    let name = document.getElementById("nameTextAdd").value;
-    let phone = document.getElementById("phoneTextAdd").value;
-    let email = document.getElementById("emailTextAdd").value;
+    // Check if inputs follow correct regax + reset variables
+    if (!validNameLength || !validEmailRegex || !validPhoneRegex) return;
+    validEmailRegex = validPhoneRegex = validNameLength = false;
 
+    // Retrieve values from the input fields + userId
+    let name = document.getElementById("nameInputAdd").value;
+    let phone = document.getElementById("phoneInputAdd").value;
+    let email = document.getElementById("emailInputAdd").value;
     let userId = getCookie("userId");
 
     if (!name || !phone || !email)
@@ -196,7 +269,7 @@ function addContact() {
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
     
-   xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status == 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
@@ -219,16 +292,19 @@ function addContact() {
 // Function to edit an existing contact
 function editContact(contactId, button)
 {
-
     let row = button.closest('tr');
     let name = row.cells[0].textContent;
     let phone = row.cells[1].textContent;
     let email = row.cells[2].textContent;
 
     document.getElementById('editContactId').value = contactId;
-    document.getElementById('editNameText').value = name;
-    document.getElementById('editPhoneText').value = phone;
-    document.getElementById('editEmailText').value = email;
+    document.getElementById('editNameInput').value = name;
+    document.getElementById('editPhoneInput').value = phone;
+    document.getElementById('editEmailInput').value = email;
+
+    document.getElementById("nameFeedbackEdit").textContent = "";
+    document.getElementById("emailFeedbackEdit").textContent = "";
+    document.getElementById("phoneFeedbackEdit").textContent = "";
 
     var editContactModal = new bootstrap.Modal(document.getElementById('editContactModal'));
     editContactModal.show();
@@ -236,11 +312,14 @@ function editContact(contactId, button)
 
 function saveEditContact()
 {
-    let contactId = document.getElementById('editContactId').value;
-    let name = document.getElementById('editNameText').value;
-    let phone = document.getElementById('editPhoneText').value;
-    let email = document.getElementById('editEmailText').value;
+    // Check if inputs follow correct regax + reset variables
+    if (!validNameLength || !validEmailRegex || !validPhoneRegex) return;
+    validEmailRegex = validPhoneRegex = validNameLength = false;
 
+    let contactId = document.getElementById('editContactId').value;
+    let name = document.getElementById('editNameInput').value;
+    let phone = document.getElementById('editPhoneInput').value;
+    let email = document.getElementById('editEmailInput').value;
     let userId = getCookie("userId");
 
     if (!name || !phone || !email)
@@ -321,6 +400,7 @@ function deleteContact(contactId, button) {
     };
     xhr.send(jsonPayload);
 }
+
 function checkForNoContacts() {
     const tableBody = document.getElementById("tableBody");
 
@@ -347,12 +427,24 @@ function searchContacts(searchValue) {
             if (this.status == 200) {
                 const response = JSON.parse(this.responseText)
                 if (response.error) {
-                    contactsContainer.innerHTML = '<p class="text-center">No contacts found!</p>';
+                    contactsContainer.innerHTML = `
+                    <div class="card text-center">
+                        <div class="card-body pb-1">
+                            <p class="text-center">No contacts found!</p>
+                        </div>
+                    </div>
+                `;
                 } else {
                     displayContacts(response.results);
                 }
             } else {
-                contactsContainer.innerHTML = '<p class="text-center">Could not fetch contacts!</p>';
+                contactsContainer.innerHTML = `
+                    <div class="card text-center">
+                        <div class="card-body pb-1">
+                            <p class="text-center">Could not fetch contacts!</p>
+                        </div>
+                    </div>
+                `;
             }
         }
     };
