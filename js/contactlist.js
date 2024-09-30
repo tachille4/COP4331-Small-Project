@@ -6,13 +6,6 @@ document.addEventListener('DOMContentLoaded', function()
 {
     console.log("DOMContentLoaded event worked");
     console.log("All cookies:", document.cookie);
-
-    var navbarToggler = document.querySelector('.navbar-toggler');
-    var navbarCollapse = document.querySelector('.navbar-collapse');
-    
-    navbarToggler.addEventListener('click', function() {
-    navbarCollapse.classList.toggle('show');
-    });
     
     const userId = getCookie("userId");
     console.log("UserId detected from cookie:", userId);
@@ -64,6 +57,14 @@ document.addEventListener('DOMContentLoaded', function()
     {
         const searchValue = this.value.trim();
         searchContacts(searchValue);
+    });
+
+    var navbarToggler = document.getElementById('navbarToggler');
+    var navbarCollapse = document.getElementById('navbarTogglerDemo02');
+    
+    navbarToggler.addEventListener('click', function() {
+        event.preventDefault();
+        navbarCollapse.classList.toggle('show');
     });
 });
 
