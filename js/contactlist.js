@@ -335,7 +335,7 @@ function saveEditContact()
 
     if (!name.value || !phone.value || !email.value)
     {
-        alert("Please format the data as instructed.");
+        alert("Please fill in all fields.");
         return;
     }
 
