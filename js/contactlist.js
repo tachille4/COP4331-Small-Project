@@ -74,12 +74,12 @@ function validateEmail(inputElement, feedbackId)
     {
         emailFeedback.textContent = "";
         inputElement.classList.remove('invalid-regex');
-        validEmailRegex = true;
+        return truel
     } else 
     {
         emailFeedback.textContent = "*Check the format of the Email Address";
         inputElement.classList.add('invalid-regex');
-        validEmailRegex = false;
+        return false;
     }
 }
 
@@ -93,12 +93,12 @@ function validatePhone(inputElement, feedbackId)
     {
         phoneFeedback.textContent = "";
         inputElement.classList.remove('invalid-regex');
-        validPhoneRegex = true;
+        return true;
     } else 
     {
         phoneFeedback.textContent = "*Check the format of the Phone Number";
         inputElement.classList.add('invalid-regex');
-        validPhoneRegex = false;
+        return false;
     }
 }
 
@@ -111,12 +111,12 @@ function validateName(inputElement, feedbackId)
     {
         nameFeedback.textContent = "*Name Lengths can't exceed 50 characters";
         inputElement.classList.add('invalid-regex');
-        validNameLength = false;
+        return false;
     } else 
     {
         nameFeedback.textContent = "";
         inputElement.classList.remove('invalid-regex');
-        validNameLength = true;
+        return true;
     }
 }
 
@@ -339,7 +339,7 @@ function saveEditContact()
         return;
     }
 
-    let tmp = { ID: contactId, Name: name, Phone: phone, Email: email };
+    let tmp = { ID: contactId, Name: name.value, Phone: phone.value, Email: email.value };
     let jsonPayload = JSON.stringify(tmp);
 
     let url = `${urlBase}/ModifyContact.${extension}`;
