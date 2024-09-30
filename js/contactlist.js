@@ -169,16 +169,17 @@ function displayContacts(contacts)
     else
     {
         let tableHTML = `
-        <table class="table table-dark table-striped table-hover" style="zoom: 1.05">
-            <thead>
-                <tr>
-                    <th style="width: 30%;">Name</th>
-                    <th style="width: 22%;">Phone</th>
-                    <th style="width: 30%;">Email</th>
-                    <th style="width: 18%;">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
+        <div class="table-responsive">
+            <table class="table table-dark table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
         `;
 
         contacts.forEach(contact => {
