@@ -189,8 +189,8 @@ function displayContacts(contacts)
                 <td>${contact.Phone}</td>
                 <td>${contact.Email}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary edit-contact" style="margin-right: 5px" data-id="${contact.ID}">✎</button>
-                    <button class="btn btn-sm btn-outline-danger delete-contact" data-id="${contact.ID}">🗑</button>
+                    <button class="btn btn-sm btn-outline-primary edit-contact" style="margin-right: 5px" data-id="${contact.ID}"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-outline-danger delete-contact" data-id="${contact.ID}"><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
             `;
