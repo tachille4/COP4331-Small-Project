@@ -319,19 +319,23 @@ function editContact(contactId, button)
 
 function saveEditContact()
 {
-    // Check if inputs follow correct regax + reset variables
-    if (!validNameLength || !validEmailRegex || !validPhoneRegex) return;
-    validEmailRegex = validPhoneRegex = validNameLength = false;
-
     let contactId = document.getElementById('editContactId').value;
     let name = document.getElementById('editNameInput').value;
     let phone = document.getElementById('editPhoneInput').value;
     let email = document.getElementById('editEmailInput').value;
     let userId = getCookie("userId");
 
-    if (!name || !phone || !email)
+    let isValid = validateName(name, 'nameFeedbackEdit') && validatePhone(phone, 'phoneFeedbackEdit') && validateEmail(email, 'emailFeedbackEdit');
+
+    if (!isValid)
     {
-        alert("Please fill in all fields.");
+        alert("Please format the data as instructed.");
+        return;
+    }
+
+    if (!name.value || !phone.value || !email.value)
+    {
+        alert("Please format the data as instructed.");
         return;
     }
 
