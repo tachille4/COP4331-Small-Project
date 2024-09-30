@@ -74,7 +74,7 @@ function validateEmail(inputElement, feedbackId)
     {
         emailFeedback.textContent = "";
         inputElement.classList.remove('invalid-regex');
-        return truel
+        return true;
     } else 
     {
         emailFeedback.textContent = "*Check the format of the Email Address";
